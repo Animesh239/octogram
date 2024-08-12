@@ -6,10 +6,10 @@ import Navbar from "./components/navbar";
 const App = () => {
   return (
     <>
-      <Navbar/>
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black flex items-center justify-center">
-      <Carousel />
-    </div>
+      <Navbar />
+      <div className="z-10 min-h-screen bg-gradient-to-r from-gray-900 to-black flex items-center justify-center">
+        <Carousel />
+      </div>
     </>
   );
 };
