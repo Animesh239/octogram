@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import Card from "./card";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import axios from "axios";
+
+import { API_URL } from "../App";
 
 function Carousel() {
   const [flippedCards, setFlippedCards] = useState({});
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [data, setData] = useState([]);
 
   const settings = {
     dots: false,
@@ -23,33 +28,18 @@ function Carousel() {
     },
   };
 
-  const data = [
-    {
-      id: 1,
-      category: "Math",
-      question: "What is 2 + 2?",
-      answer: "The answer is 4.",
-    },
-    {
-      id: 2,
-      category: "Science",
-      question: "What is the boiling point of water?",
-      answer: "100°C or 212°F.",
-    },
-    {
-      id: 3,
-      category: "Geography",
-      question: "What is the capital of France?",
-      answer: "Paris.",
-    },
-    {
-      id: 4,
-      category: "History",
-      question: "Who was the first president of the United States?",
-      answer: "George Washington.",
-    },
-    // Add more data as needed
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/problems`);
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const setFlipped = (id, value) => {
     setFlippedCards((prev) => ({ ...prev, [id]: value }));
@@ -59,33 +49,37 @@ function Carousel() {
 
   return (
     <div className="w-3/4 m-auto">
-      <div className="mt-20">
-        <Slider {...settings}>
-          {data.map((item) => (
-            <div key={item.id} className="flex justify-center items-center">
-              <Card
-                id={item.id}
-                category={item.category}
-                question={item.question}
-                answer={item.answer}
-                flipped={!!flippedCards[item.id]}
-                setFlipped={(value) => setFlipped(item.id, value)}
-              />
+      {data.length > 0 ? (
+        <div className="mt-20">
+          <Slider {...settings}>
+            {data.map((item, index) => (
+              <div key={index} className="flex justify-center items-center">
+                <Card
+                  index={index}
+                  category={item.categories}
+                  question={item.question}
+                  answer={item.answer}
+                  flipped={!!flippedCards[item.id]}
+                  setFlipped={(value) => setFlipped(item.id, value)}
+                />
+              </div>
+            ))}
+          </Slider>
+          <div className="mt-4">
+            <div className="relative h-2 w-full bg-gray-300 rounded">
+              <div
+                className="absolute h-2 bg-indigo-500 rounded"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
             </div>
-          ))}
-        </Slider>
-        <div className="mt-4">
-          <div className="relative h-2 w-full bg-gray-300 rounded">
-            <div
-              className="absolute h-2 bg-indigo-500 rounded"
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
-          </div>
-          <div className="text-center mt-2">
-            {currentSlide + 1}/{data.length}
+            <div className="text-center mt-2">
+              {currentSlide + 1}/{data.length}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center text-white text-2xl mt-20">Loading...</div>
+      )}
     </div>
   );
 }
