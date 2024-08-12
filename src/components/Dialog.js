@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import axios from "axios";
+import { AdminContext } from "../context/adminContext";
 
 const Dialog = ({ onClose }) => {
+  const { setAdmin } = useContext(AdminContext);
   const dialogRef = useRef();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Close the dialog when clicking outside of it
   const handleClickOutside = (e) => {
     if (dialogRef.current && !dialogRef.current.contains(e.target)) {
       onClose();
@@ -29,30 +29,31 @@ const Dialog = ({ onClose }) => {
       );
 
       if (response.status === 200) {
-        alert("Login successful");
+        setAdmin(true);
         onClose();
       }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          alert("Invalid credentials. Please try again.");
-        } else if (error.response.status === 500) {
-          alert("Server error. Please try again later.");
+    }catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            alert("Invalid credentials. Please try again.");
+          } else if (error.response.status === 500) {
+            alert("Server error. Please try again later.");
+          } else {
+            alert(`Login failed: ${error.response.statusText}`);
+          }
+          console.log("Error response:", error.response);
+        } else if (error.request) {
+          alert(
+            "No response from the server. Please check your network connection."
+          );
+          console.log("Error request:", error.request);
         } else {
-          alert(`Login failed: ${error.response.statusText}`);
+          alert("An error occurred. Please try again.");
+          console.log("Error message:", error.message);
         }
-        console.log("Error response:", error.response);
-      } else if (error.request) {
-        alert(
-          "No response from the server. Please check your network connection."
-        );
-        console.log("Error request:", error.request);
-      } else {
-        alert("An error occurred. Please try again.");
-        console.log("Error message:", error.message);
       }
-    }
   };
+
   return (
     <div
       onClick={handleClickOutside}
