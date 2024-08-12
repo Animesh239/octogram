@@ -1,5 +1,5 @@
 // App.js
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "./context/adminContext"; 
 import "./index.css";
 import Carousel from "./components/carousel";

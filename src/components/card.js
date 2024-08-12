@@ -1,13 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Card = ({ id, category, question, answer, flipped, setFlipped }) => {
+const Card = ({ id, category, question, answer, flipped, setFlipped, onEdit, onDelete, isAdmin }) => {
   return (
     <motion.div
       className="relative w-96 h-80 mx-auto bg-gray-900 text-white rounded-lg shadow-lg cursor-pointer"
       animate={{ rotateY: flipped ? 180 : 0 }}
       transition={{ duration: 0.4 }}
     >
+      {/* Front Side */}
       <div 
         className="absolute w-full h-full flex flex-col items-start justify-start text-left p-6 text-xl font-semibold"
         style={{ backfaceVisibility: flipped ? 'hidden' : 'visible', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
@@ -19,12 +20,30 @@ const Card = ({ id, category, question, answer, flipped, setFlipped }) => {
         <div className="mt-2 text-base leading-relaxed">
           {question}
         </div>
-        <button 
-          className="mt-auto bg-cyan-500 text-black text-sm px-4 py-2 rounded-xl self-end" 
-          onClick={() => setFlipped(true)}
-        >
-          Answer
-        </button>
+        <div className="flex space-x-2 mt-4">
+          <button 
+            className="bg-cyan-500 text-black text-sm px-4 py-2 rounded-xl"
+            onClick={() => setFlipped(true)}
+          >
+            Answer
+          </button>
+          {isAdmin && (
+            <>
+              <button
+                className="bg-yellow-500 text-black text-sm px-4 py-2 rounded-xl"
+                onClick={onEdit}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 text-white text-sm px-4 py-2 rounded-xl"
+                onClick={onDelete}
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Back Side */}

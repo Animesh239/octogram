@@ -29,6 +29,7 @@ const Dialog = ({ onClose }) => {
       );
 
       if (response.status === 200) {
+        window.location.reload();
         setAdmin(true);
         onClose();
       }
