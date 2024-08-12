@@ -31,7 +31,7 @@ function Carousel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/problems`);
+        const response = await axios.get(`${API_URL}/api/problems`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

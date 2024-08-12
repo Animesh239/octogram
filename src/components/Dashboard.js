@@ -16,7 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/problems`);
+        const response = await axios.get(`${API_URL}/api/problems`);
         setProblems(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -28,7 +28,7 @@ const Dashboard = () => {
 
   const handleAdd = async () => {
     try {
-      await axios.post("http://localhost:8000/api/admin/add", {
+      await axios.post(`${API_URL}/api/admin/add`, {
         category,
         question,
         answer,
@@ -46,7 +46,7 @@ const Dashboard = () => {
   const handleEdit = async () => {
     try {
       await axios.put(
-        `http://localhost:8000/api/admin/update/${editProblemId}`,
+        `${API_URL}/api/admin/update/${editProblemId}`,
         {
           category,
           question,
@@ -83,7 +83,7 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/admin/delete/${id}`);
+      await axios.delete(`${API_URL}/api/admin/delete/${id}`);
       setProblems(problems.filter((problem) => problem.id !== id));
     } catch (error) {
       console.error("Error deleting problem:", error);

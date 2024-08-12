@@ -2,6 +2,8 @@ import React, { useRef, useState, useContext } from "react";
 import axios from "axios";
 import { AdminContext } from "../context/adminContext";
 
+import { API_URL } from "../App";
+
 const Dialog = ({ onClose }) => {
   const { setAdmin } = useContext(AdminContext);
   const dialogRef = useRef();
@@ -21,7 +23,7 @@ const Dialog = ({ onClose }) => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/admin/login",
+        `${API_URL}/api/admin/login`,
         {
           email: email,
           password: password,

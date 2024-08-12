@@ -7,7 +7,7 @@ import Navbar from "./components/navbar";
 import Dialog from "./components/Dialog";
 import Dashboard from "./components/Dashboard";
 
-export const API_URL = "http://localhost:8000/api";
+export const API_URL = "http://localhost:8000";
 
 const App = () => {
   const { admin } = useContext(AdminContext);
