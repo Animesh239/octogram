@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Card = ({ id, category, question, answer, flipped, setFlipped, onEdit, onDelete, isAdmin }) => {
+const Card = ({ id, index, category, question, answer, flipped, setFlipped, onEdit, onDelete, isAdmin }) => {
   return (
     <motion.div
       className="relative w-96 h-80 mx-auto bg-gray-900 text-white rounded-lg shadow-lg cursor-pointer"
@@ -14,7 +14,7 @@ const Card = ({ id, category, question, answer, flipped, setFlipped, onEdit, onD
         style={{ backfaceVisibility: flipped ? 'hidden' : 'visible', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
       >
         <div className="flex items-center space-x-4 mb-4">
-          <span className="text-3xl font-bold">{id.toString().padStart(2, '0')}</span>
+          <span className="text-3xl font-bold">{(index+1).toString().padStart(2, '0')}</span>
           <span className="text-2xl font-medium">{category}</span>
         </div>
         <div className="mt-2 text-base leading-relaxed">
